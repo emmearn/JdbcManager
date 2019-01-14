@@ -29,46 +29,6 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-    <!--Security-->
-    <filter>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-        <async-supported>true</async-supported>
-    </filter>
-    <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <servlet-name>jdbcmanager</servlet-name>
-    </filter-mapping>
-
-    <!-- Commons filter-->
-    <filter>
-        <filter-name>hiddenMethodFilter</filter-name>
-        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
-        <async-supported>true</async-supported>
-    </filter>
-    <filter-mapping>
-        <filter-name>hiddenMethodFilter</filter-name>
-        <servlet-name>jdbcmanager</servlet-name>
-    </filter-mapping>
-    <filter>
-        <filter-name>deviceResolverRequestFilter</filter-name>
-        <filter-class>org.springframework.mobile.device.DeviceResolverRequestFilter</filter-class>
-        <async-supported>true</async-supported>
-    </filter>
-    <filter-mapping>
-        <filter-name>deviceResolverRequestFilter</filter-name>
-        <servlet-name>jdbcmanager</servlet-name>
-    </filter-mapping>
-    <filter>
-        <filter-name>httpPutFormFilter</filter-name>
-        <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
-        <async-supported>true</async-supported>
-    </filter>
-    <filter-mapping>
-        <filter-name>httpPutFormFilter</filter-name>
-        <servlet-name>jdbcmanager</servlet-name>
-    </filter-mapping>
-
     <servlet>
         <servlet-name>jdbcmanager</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

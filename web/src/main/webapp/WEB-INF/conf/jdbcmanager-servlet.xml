@@ -21,15 +21,6 @@
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 
-
-    <mvc:interceptors>
-        <bean class="org.springframework.mobile.device.DeviceResolverHandlerInterceptor"/>
-        <mvc:interceptor>
-            <mvc:mapping path="/share/pages/contents/**"/>
-            <bean class="it.jdbcmanager.utils.web.servlet.CounterHandlerInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
-
     <bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="WEB-INF/conf/configuration.properties"/>
     </bean>
