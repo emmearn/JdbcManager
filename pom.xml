@@ -16,6 +16,8 @@
         <servlet.api>3.1.0</servlet.api>
         <jetty.version>9.4.0.v20161208</jetty.version>
         <maven.surefire>2.19.1</maven.surefire>
+        <c3p0.version>0.9.1.2</c3p0.version>
+        <spring.mobile.device>1.1.5.RELEASE</spring.mobile.device>
     </properties>
 
     <modules>
