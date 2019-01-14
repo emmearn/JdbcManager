@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+        metadata-complete="true"
+        version="3.0">
+
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>jdbcmanager.root</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            WEB-INF/conf/jdbcmanager-context.xml
+        </param-value>
+    </context-param>
+
+    <absolute-ordering>
+        <!-- Due to a bug in Tomcat 7.0.29, an empty absolute-ordering does not prevent the annotation scanning.
+        Adding a dummy fragment name does the trick.
+        see proposed workaround in https://bz.apache.org/bugzilla/show_bug.cgi?id=54262#c0 -->
+        <name>dummy</name>
+    </absolute-ordering>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!--Security-->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <servlet-name>jdbcmanager</servlet-name>
+    </filter-mapping>
+
+    <!-- Commons filter-->
+    <filter>
+        <filter-name>hiddenMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>hiddenMethodFilter</filter-name>
+        <servlet-name>jdbcmanager</servlet-name>
+    </filter-mapping>
+    <filter>
+        <filter-name>deviceResolverRequestFilter</filter-name>
+        <filter-class>org.springframework.mobile.device.DeviceResolverRequestFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>deviceResolverRequestFilter</filter-name>
+        <servlet-name>jdbcmanager</servlet-name>
+    </filter-mapping>
+    <filter>
+        <filter-name>httpPutFormFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>httpPutFormFilter</filter-name>
+        <servlet-name>jdbcmanager</servlet-name>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>jdbcmanager</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>WEB-INF/conf/jdbcmanager-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>jdbcmanager</servlet-name>
+        <url-pattern>/*</url-pattern>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+</web-app>
