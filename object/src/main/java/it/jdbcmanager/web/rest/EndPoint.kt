@@ -18,6 +18,12 @@ class EndPoint {
     @Autowired
     private lateinit var genericObjectService: Service
 
+    // TODO
+    /**
+        * json example for every rest in the redmi file
+        * to enable "disable" end point
+     */
+
     @GetMapping("/{id}", produces = arrayOf("application/json"))
     fun getGroup(@PathVariable("id") id: Int?) : DeferredResult<ResponseEntity<Any>> {
         val deferredResult = DeferredResult<ResponseEntity<Any>>()
