@@ -66,9 +66,9 @@ object JdbcManager {
                 orderType?.let {
                     if(orderType.toUpperCase() in orderTypes)
                         query.append("ORDER BY T.$orderBy $orderType")
-                    else it.jdbcmanager.JdbcManager.throwRequiredArgument(orderType) as T
+                    else JdbcManager.throwRequiredArgument(orderType) as T
                 } ?: query.append("ORDER BY T.$orderBy")
-            } else it.jdbcmanager.JdbcManager.throwIllegalArgument(orderBy) as T
+            } else JdbcManager.throwIllegalArgument(orderBy) as T
         }
 
         return if(queryForObject)
@@ -85,10 +85,10 @@ object JdbcManager {
         obj::class.memberProperties.forEach {
             prop ->
             when (prop.name) {
-                "id", "enabled" -> prop.getter.call(obj)?.let { it.jdbcmanager.JdbcManager.throwTooManyArgument(prop.name) }
+                "id", "enabled" -> prop.getter.call(obj)?.let { JdbcManager.throwTooManyArgument(prop.name) }
                 else -> {
                     prop.getter.call(obj)?.let {
-                        fields.append(it.jdbcmanager.JdbcManager.formatFieldName(prop.name)).append(",")
+                        fields.append(JdbcManager.formatFieldName(prop.name)).append(",")
                         if(prop.returnType.jvmErasure.isSubclassOf(String::class) || prop.returnType.jvmErasure.isSubclassOf(LocalDateTime::class))
                             values.append("\'"+ prop.getter.call(obj) + "\'").append(',')
                         else
@@ -118,10 +118,10 @@ object JdbcManager {
                     check(prop.getter.call(obj) is Int)
                     id = prop.getter.call(obj) as Int
                 }
-                "enabled" -> prop.getter.call(obj)?.let { it.jdbcmanager.JdbcManager.throwTooManyArgument(prop.name) }
+                "enabled" -> prop.getter.call(obj)?.let { JdbcManager.throwTooManyArgument(prop.name) }
                 else -> {
                     prop.getter.call(obj)?.let {
-                        fields.append(it.jdbcmanager.JdbcManager.formatFieldName(prop.name)).append(" = ")
+                        fields.append(JdbcManager.formatFieldName(prop.name)).append(" = ")
 
                         if(prop.returnType.jvmErasure.isSubclassOf(String::class) || prop.returnType.jvmErasure.isSubclassOf(LocalDateTime::class))
                             fields.append("\'"+ prop.getter.call(obj) + "\'").append(',')

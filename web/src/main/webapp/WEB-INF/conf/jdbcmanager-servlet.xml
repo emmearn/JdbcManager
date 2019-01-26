@@ -7,8 +7,6 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <!--<mvc:resources mapping="/vimeo.html" location="/vimeo.html"/>-->
-
     <context:component-scan base-package="it.jdbcmanager.web.rest"/>
     <context:component-scan base-package="it.jdbcmanager.security.controller"/>
     <context:component-scan base-package="it.jdbcmanager.web.servlet"/>
