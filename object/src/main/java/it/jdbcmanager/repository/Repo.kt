@@ -33,7 +33,10 @@ class Repo {
         override fun mapRow(rs: ResultSet, i: Int): GenericObject =
                 GenericObject(
                     rs.getInt("id"),
-                    rs.getString("name")
+                    rs.getString("name"),
+                    rs.getInt("custom_code"),
+                    rs.getTimestamp("date").toLocalDateTime(),
+                    rs.getBoolean("enabled")
                 )
     }
 }
