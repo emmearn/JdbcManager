@@ -29,6 +29,9 @@ class Repo {
     fun deleteGenericObject(id: Int): Boolean =
             JdbcManager.delete<GenericObject>(jdbcTemplate, id)
 
+    fun disableGenericObject(id: Int): Boolean =
+            JdbcManager.disable<GenericObject>(jdbcTemplate, id)
+
     class GenericObjectRowMapper: org.springframework.jdbc.core.RowMapper<GenericObject> {
         override fun mapRow(rs: ResultSet, i: Int): GenericObject =
                 GenericObject(

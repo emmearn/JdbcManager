@@ -21,16 +21,19 @@ class EndPoint {
     // TODO
     /**
         * to enable "disable" end point
+        * add enabled parameter
+        * add log.debug
      */
 
-    @GetMapping("/{id}", produces = arrayOf("application/json"))
-    fun getGroup(@PathVariable("id") id: Int?) : DeferredResult<ResponseEntity<Any>> {
+    @GetMapping(produces = arrayOf("application/json"))
+    fun getGroups(@RequestParam("orderBy", required = false) orderBy: String?, @RequestParam("orderType", required = false) orderType: String?) : DeferredResult<ResponseEntity<Any>> {
         val deferredResult = DeferredResult<ResponseEntity<Any>>()
-        val result : ListenableFuture<GenericObject> = genericObjectService.getGenericObject(id = id, queryForObject = true) as ListenableFuture<GenericObject>
+
+        val result : ListenableFuture<List<GenericObject>> = genericObjectService.getGenericObject(orderBy = orderBy,  orderType = orderType, queryForObject = false) as ListenableFuture<List<GenericObject>>
 
         result.addCallback(
-                object : ListenableFutureCallback<GenericObject> {
-                    override fun onSuccess(result: GenericObject) {
+                object : ListenableFutureCallback<List<GenericObject>> {
+                    override fun onSuccess(result: List<GenericObject>) {
                         deferredResult.setResult(ResponseEntity(ResultObject(result), HttpStatus.OK))
                     }
 
@@ -43,15 +46,14 @@ class EndPoint {
         return deferredResult
     }
 
-    @GetMapping(produces = arrayOf("application/json"))
-    fun getGroups(@RequestParam("orderBy", required = false) orderBy: String?, @RequestParam("orderType", required = false) orderType: String?) : DeferredResult<ResponseEntity<Any>> {
+    @GetMapping("/{id}", produces = arrayOf("application/json"))
+    fun getGroup(@PathVariable("id") id: Int?) : DeferredResult<ResponseEntity<Any>> {
         val deferredResult = DeferredResult<ResponseEntity<Any>>()
-
-        val result : ListenableFuture<List<GenericObject>> = genericObjectService.getGenericObject(orderBy = orderBy,  orderType = orderType, queryForObject = false) as ListenableFuture<List<GenericObject>>
+        val result : ListenableFuture<GenericObject> = genericObjectService.getGenericObject(id = id, queryForObject = true) as ListenableFuture<GenericObject>
 
         result.addCallback(
-                object : ListenableFutureCallback<List<GenericObject>> {
-                    override fun onSuccess(result: List<GenericObject>) {
+                object : ListenableFutureCallback<GenericObject> {
+                    override fun onSuccess(result: GenericObject) {
                         deferredResult.setResult(ResponseEntity(ResultObject(result), HttpStatus.OK))
                     }
 
@@ -79,4 +81,8 @@ class EndPoint {
     @DeleteMapping("/{id}", produces = arrayOf("application/json"))
     fun deleteGroup(@PathVariable id: Int): DeferredResult<ResponseEntity<*>> =
             ResultManager.getDeferredResult(genericObjectService.deleteGenericObject(id))
+
+    @PatchMapping("/{id}/disable", produces = arrayOf("application/json"))
+    fun disableGroup(@PathVariable id: Int): DeferredResult<ResponseEntity<*>> =
+            ResultManager.getDeferredResult(genericObjectService.disableGenericObject(id))
 }

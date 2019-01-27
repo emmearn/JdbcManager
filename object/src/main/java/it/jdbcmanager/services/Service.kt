@@ -34,4 +34,7 @@ class Service {
 
     fun deleteGenericObject(id: Int) =
             ResultManager.getAsyncResult(repo.deleteGenericObject(id))
+
+    fun disableGenericObject(id: Int) =
+            ResultManager.getAsyncResult(repo.disableGenericObject(id))
 }
