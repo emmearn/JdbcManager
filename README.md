@@ -1,13 +1,13 @@
 # JdbcManager
-JdbcManager is a singleton object who provide methods for to interface with a DB by "JdbcTemplate".
-This one is provides by org.springframework.jdbc.core package, but, for to use it, is necessary write query
+JdbcManager is a singleton object that provides methods for to interface with a DB by "JdbcTemplate".
+This one is provided by org.springframework.jdbc.core package, but, for use it, is necessary write query
 like "SELECT * FROM table WHERE condition ORDER BY field ASC".
 JdbcManager's methods create this query for you using "Generics".
 In the project is already present an object named "GenericObject" in the models module.
-The GenericObject model has more demostration fields: name(String), customCode(Int), date(LocalDateTime), enabled(Boolean).
+The GenericObject model has more demonstration fields: name(String), customCode(Int), date(LocalDateTime), enabled(Boolean).
 The end point for GenericObject use a service layer that use a repo layer that use the JdbcManager methods.
 That's it.
-Obiviously, it isn't a ORM. It is only an exercise with the Generics and Kotlin.
+Obviously, it isn't a ORM. It is only an exercise with the Generics and Kotlin.
 
 In order to perform this project they are necessary:
 - Postgresql (definitely working with version 9.5);
