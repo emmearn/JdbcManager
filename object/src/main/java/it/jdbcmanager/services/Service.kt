@@ -14,8 +14,10 @@ class Service {
     @Autowired
     private lateinit var repo : Repo
 
-    fun getGenericObject(id: Int? = null, orderBy: String? = null, orderType: String? = null, queryForObject: Boolean) : ListenableFuture<*> {
+    fun getGenericObject(id: Int? = null, enabled: Boolean? = null, orderBy: String? = null, orderType: String? = null, queryForObject: Boolean) : ListenableFuture<*> {
         val conditionsList = ArrayList<Triple<String, String, Any?>>()
+        enabled?.let { conditionsList.add(Triple("enabled", "=", enabled)) }
+
         id?.let {
             conditionsList.add(Triple("id", "=", id))
             return ResultManager.getAsyncResult(repo.getGenericObject(conditionsList = conditionsList, queryForObject = queryForObject))

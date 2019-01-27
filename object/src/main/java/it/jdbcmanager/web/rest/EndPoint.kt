@@ -20,16 +20,16 @@ class EndPoint {
 
     // TODO
     /**
-        * to enable "disable" end point
         * add enabled parameter
         * add log.debug
      */
 
     @GetMapping(produces = arrayOf("application/json"))
-    fun getGroups(@RequestParam("orderBy", required = false) orderBy: String?, @RequestParam("orderType", required = false) orderType: String?) : DeferredResult<ResponseEntity<Any>> {
+    fun getGroups(@RequestParam("orderBy", required = false) orderBy: String?, @RequestParam("orderType", required = false) orderType: String?,
+                  @RequestParam("enabled", required = false) enabled: Boolean?) : DeferredResult<ResponseEntity<Any>> {
         val deferredResult = DeferredResult<ResponseEntity<Any>>()
 
-        val result : ListenableFuture<List<GenericObject>> = genericObjectService.getGenericObject(orderBy = orderBy,  orderType = orderType, queryForObject = false) as ListenableFuture<List<GenericObject>>
+        val result : ListenableFuture<List<GenericObject>> = genericObjectService.getGenericObject(enabled = enabled, orderBy = orderBy,  orderType = orderType, queryForObject = false) as ListenableFuture<List<GenericObject>>
 
         result.addCallback(
                 object : ListenableFutureCallback<List<GenericObject>> {

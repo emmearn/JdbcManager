@@ -39,7 +39,7 @@ If there isn't any error, the backend will be avaible at the address `localhost:
 In the body of requests that require a json, fields likes "id" or "enable" are illegal because they are part of the backend logic.
 The services are:
 - `GET ../genericobject` for listing all the objects generated;
-- `GET ../genericobject?orderBy=id&orderType=ASC` in optional is also available, or just one of these filters;
+- `GET ../genericobject?orderBy=id&orderType=ASC&enabled=true` in optional is also available, or just one of these filters;
 - `GET ../genericobject/{id}` for a specific object;
 - `POST ../genericobject` with the body like
     {
