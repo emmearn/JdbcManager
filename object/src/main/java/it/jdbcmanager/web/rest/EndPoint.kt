@@ -18,12 +18,6 @@ class EndPoint {
     @Autowired
     private lateinit var genericObjectService: Service
 
-    // TODO
-    /**
-        * add enabled parameter
-        * add log.debug
-     */
-
     @GetMapping(produces = arrayOf("application/json"))
     fun getGroups(@RequestParam("orderBy", required = false) orderBy: String?, @RequestParam("orderType", required = false) orderType: String?,
                   @RequestParam("enabled", required = false) enabled: Boolean?) : DeferredResult<ResponseEntity<Any>> {

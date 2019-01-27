@@ -10,8 +10,13 @@ import kotlin.reflect.full.declaredMembers
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.jvmErasure
+import org.slf4j.LoggerFactory
+import org.slf4j.Logger
+
 
 object JdbcManager {
+    val log: Logger = LoggerFactory.getLogger(this.javaClass)
+
     inline fun <reified T> select(jdbcTemplate: JdbcTemplate, mapper: RowMapper<*>, conditionsList: List<Triple<String, String, Any?>>, joinsList: List<Triple<KClass<*>, String, String>>? = null,
                                   orderBy: String? = null, orderType: String? = null, queryForObject: Boolean) : Any {
         val tableName = formatTableName(T::class.simpleName)
@@ -71,6 +76,7 @@ object JdbcManager {
             } else JdbcManager.throwIllegalArgument(orderBy) as T
         }
 
+        log.debug(query.toString())
         return if(queryForObject)
             jdbcTemplate.queryForObject("$query;", mapper)
         else
@@ -100,8 +106,10 @@ object JdbcManager {
         val formattedFields = fields.substring(0, fields.lastIndexOf(","))
         val formattedValues = values.substring(0, values.lastIndexOf(","))
 
+        val query = "INSERT INTO $tableName ($formattedFields) VALUES ($formattedValues) RETURNING id;"
+        log.debug(query)
         return if(returnId)
-            jdbcTemplate.queryForObject("INSERT INTO $tableName ($formattedFields) VALUES ($formattedValues) RETURNING id;", idRowMapper())
+            jdbcTemplate.queryForObject(query, idRowMapper())
         else
             jdbcTemplate.update("INSERT INTO $tableName ($formattedFields) VALUES ($formattedValues);") == 1
     }
@@ -134,18 +142,25 @@ object JdbcManager {
 
         return if(fields.isNotEmpty()) {
             val formattedFields = fields.substring(0, fields.lastIndexOf(","))
-            jdbcTemplate.update("UPDATE $tableName SET $formattedFields WHERE id = $id;") == 1
+            val query = "UPDATE $tableName SET $formattedFields WHERE id = $id;"
+            log.debug(query)
+
+            jdbcTemplate.update(query) == 1
         } else false
     }
 
     inline fun <reified T: Any> disable(jdbcTemplate: JdbcTemplate, id: Int) : Boolean {
         val tableName = formatTableName(T::class.simpleName)
-        return jdbcTemplate.update("UPDATE $tableName SET enabled = false WHERE id = $id;") == 1
+        val query = "UPDATE $tableName SET enabled = false WHERE id = $id;"
+        log.debug(query)
+        return jdbcTemplate.update(query) == 1
     }
 
     inline fun <reified T: Any> delete(jdbcTemplate: JdbcTemplate, id: Int) : Boolean {
         val tableName = formatTableName(T::class.simpleName)
-        return jdbcTemplate.update("DELETE FROM $tableName WHERE id = $id;") == 1
+        val query = "DELETE FROM $tableName WHERE id = $id;"
+        log.debug(query)
+        return jdbcTemplate.update(query) == 1
     }
 
     class idRowMapper: RowMapper<Int> {
