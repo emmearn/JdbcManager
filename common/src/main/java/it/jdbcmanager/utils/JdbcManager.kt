@@ -65,9 +65,9 @@ object JdbcManager {
             if(orderBy in fieldsNames) {
                 orderType?.let {
                     if(orderType.toUpperCase() in orderTypes)
-                        query.append("ORDER BY T.$orderBy $orderType")
+                        query.append(" ORDER BY T.$orderBy $orderType")
                     else JdbcManager.throwRequiredArgument(orderType) as T
-                } ?: query.append("ORDER BY T.$orderBy")
+                } ?: query.append(" ORDER BY T.$orderBy")
             } else JdbcManager.throwIllegalArgument(orderBy) as T
         }
 

@@ -20,8 +20,8 @@ class EndPoint {
 
     // TODO
     /**
-        * json example for every rest in the redmi file
         * to enable "disable" end point
+        * explain the conditions list
      */
 
     @GetMapping("/{id}", produces = arrayOf("application/json"))

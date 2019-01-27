@@ -1,4 +1,14 @@
 # JdbcManager
+JdbcManager is a singleton object who provide methods for to interface with a DB by "JdbcTemplate".
+This one is provides by org.springframework.jdbc.core package, but, for to use it, is necessary write query
+like "SELECT * FROM table WHERE condition ORDER BY field ASC".
+JdbcManager's methods create this query for you using "Generics".
+In the project is already present an object named "GenericObject" in the models module.
+The GenericObject model has more demostration fields: name(String), customCode(Int), date(LocalDateTime), enabled(Boolean).
+The end point for GenericObject use a service layer that use a repo layer that use the JdbcManager methods.
+That's it.
+Obiviously, it isn't a ORM. It is only an exercise with the Generics and Kotlin.
+
 In order to perform this project they are necessary:
 - Postgresql (definitely working with version 9.5);
 - Jetty (definitely working with version 9.3.14).
@@ -17,7 +27,7 @@ After that, create a simple table:
     name VARCHAR(70),
     custom_code INTEGER,
     date TIMESTAMP WITHOUT TIME ZONE,
-    enabled BOOLEAN
+    enabled BOOLEAN DEFAULT TRUE
 );`
 
 #### Execution
@@ -29,8 +39,60 @@ If there isn't any error, the backend will be avaible at the address `localhost:
 In the body of requests that require a json, fields likes "id" or "enable" are illegal because they are part of the backend logic.
 The services are:
 - `GET ../genericobject` for listing all the objects generated;
+- `GET ../genericobject?orderBy=id&orderType=ASC` in optional is also available, or just one of these filters;
 - `GET ../genericobject/{id}` for a specific object;
-- `POST ../genericobject` for creation;
-- `PUT ../genericobject` for a full update;
-- `PATCH ../genericobject` for a partial update;
+- `POST ../genericobject` with the body like
+    {
+        "name": "a name",
+        "customCode": 42,
+        "date": "2019-01-27T15:50"
+    }
+    for creation;
+- `PUT ../genericobject` with the body like
+    {
+        "id": 1,
+        "name": "name changed",
+        "customCode": 24,
+        "date": "2019-01-27T15:50"
+    }
+    for a full update. Notice that if the backend misses a field or the id return an error;
+- `PATCH ../genericobject` with the body like
+    {
+        "id": 1,
+        "name": "name changed partially"
+    }
+    for a partial update;
 - `DELETE ../genericobject/{id}` for to cancel a specific object;
+
+Every return is wrapped in an object like
+{
+    "result": true, // or false if there is an error. In that case "message" field contains a message
+    "message": null
+}
+returned after a request like post creation or editing an existing object or like
+{
+    "result": [
+        {
+            "id": 1,
+            "name": "name",
+            "customCode": 42,
+            "date": [2019, 1, 26, 17, 18],
+            "enabled": true
+        },
+        {
+            "id": 2,
+            "name": "another name",
+            "customCode": 34,
+            "date": [2019, 1, 26, 17, 18],
+            "enabled": true
+        }
+    ],
+    "message": null
+}
+returned after a get request.
+
+### Possible developments
+GenericObject is only for demostration.
+You can expand this data model and create custom object defined into models module.
+After that, is also necessary create end point, service, and repo layer.
+But JdbcManager works with any model.
