@@ -91,6 +91,15 @@ returned after a request like post creation or editing an existing object or lik
 }
 returned after a get request.
 
+### Customizations
+If you notice `GET ../genericobject/{id}` is different by `GET ../genericobject` only for a parameter.
+Indeed they use the same repo methods. The first one only have `conditionsList.add(Triple("id", "=", id))` more than the second one.
+If you want, you can use this conditionsList as you wish.
+For example, you can add a filter:
+`conditionsList.add(Triple("enabled", "=", true))`
+or a specific condition:
+`conditionsList.add(Triple("customCode", ">", 10))`
+
 ### Possible developments
 GenericObject is only for demostration.
 You can expand this data model and create custom object defined into models module.
