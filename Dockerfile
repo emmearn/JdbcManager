@@ -1,10 +1,8 @@
-FROM ubuntu:18.04
+FROM tomcat
 MAINTAINER Marco Arnone, https://github.com/emmearn
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y openjdk-8-jdk && \
-    apt-get install -y tomcat8 && \
-    apt-get clean
-
+WORKDIR /usr/local/tomcat/webapps/
+RUN rm -R *
+COPY ./web/target/jdbcmanager-web-0.0.4-SNAPSHOT.war .
+RUN mv jdbcmanager-web-0.0.4-SNAPSHOT.war app.war
+RUN ../bin/catalina.sh start
 EXPOSE 8080
-#/usr/share/tomcat8/bin/catalina.sh
