@@ -1,10 +1,26 @@
 version: '3.0'
 
 services:
+  db:
+    image: postgres
+    environment:
+    - "TZ=Europe/Amsterdam"
+    - "POSTGRES_USER=jdbcuser"
+    - "POSTGRES_PASSWORD=2_hQeK"
+    ports:
+    - "5432:5432"
+    volumes:
+    - "./sql:/docker-entrypoint-initdb.d"
+    network_mode: "bridge"
+
   webapp:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 8080:8080/tcp
-    network_mode: "host"
+      - "8080:8080"
+    network_mode: "bridge"
+    depends_on:
+      - db
+    links:
+      - db
