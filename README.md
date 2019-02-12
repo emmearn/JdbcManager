@@ -13,13 +13,14 @@ In order to perform this project they are necessary:
 - Postgresql (definitely working with version 9.5);
 - Jetty (definitely working with version 9.3.14).
 
-#### Postgresql
+If you want to run it on your own, you need a DB:
+#### Postgresql (Optional 1.1)
 It is also necessary a DB.
 Execute the commands:
 - `sudo -i -u postgres`;
-- `createuser -P -s -e user_example`;
+- `createuser -P -s -e jdbcuser`;
 - choose and enter a password.
-- `createdb -O user_example db_name_example`;
+- `createdb -O jdbcuser jdbc_db`;
 
 After that, create a simple table:
 `CREATE TABLE generic_object (
@@ -30,9 +31,12 @@ After that, create a simple table:
     enabled BOOLEAN DEFAULT TRUE
 );`
 
-#### Execution
-- run the comand `mvn clean install` in the main project folder;
-- Enter into the folder `web` and run the comand: `mvn jetty:run`;
+#### Execution (Optional 1.2)
+- run the command `mvn clean install` in the main project folder;
+- Enter into the folder `web` and run the command: `mvn jetty:run`;
+
+#### Docker (Optional 2.0)
+Otherwise, run simply docker-compose
 
 #### Usage
 If there isn't any error, the backend will be avaible at the address `localhost:8080`.
@@ -101,7 +105,7 @@ or a specific condition:
 `conditionsList.add(Triple("customCode", ">", 10))`
 
 ### Possible developments
-GenericObject is only for demostration.
+GenericObject is only for demonstration.
 You can expand this data model and create custom object defined into models module.
 After that, is also necessary create end point, service, and repo layer.
 But JdbcManager works with any model.
