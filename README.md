@@ -39,7 +39,7 @@ After that, create a simple table:
 Otherwise, run simply docker-compose
 
 #### Usage
-If there isn't any error, the backend will be avaible at the address `localhost:8080`.
+If there isn't any error, the backend will be avaible at the address `localhost:8080` (`localhost:8080/app` if you used docker compose).
 In the body of requests that require a json, fields likes "id" or "enable" are illegal because they are part of the backend logic.
 The services are:
 - `GET ../genericobject` for listing all the objects generated;
